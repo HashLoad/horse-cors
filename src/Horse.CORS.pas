@@ -6,16 +6,16 @@ uses
   System.SysUtils, Horse;
 
 type
-  HorseCORS = record
+  HorseCORSConfig = record
   public
-    function AllowedOrigin(AAllowedOrigin: string): HorseCORS;
-    function AllowedCredentials(AAllowedCredentials: Boolean): HorseCORS;
-    function AllowedHeaders(AAllowedHeaders: string): HorseCORS;
-    function AllowedMethods(AAllowedMethods: string): HorseCORS;
-    function ExposedHeaders(AExposedHeaders: string): HorseCORS;
+    function AllowedOrigin(AAllowedOrigin: string): HorseCORSConfig;
+    function AllowedCredentials(AAllowedCredentials: Boolean): HorseCORSConfig;
+    function AllowedHeaders(AAllowedHeaders: string): HorseCORSConfig;
+    function AllowedMethods(AAllowedMethods: string): HorseCORSConfig;
+    function ExposedHeaders(AExposedHeaders: string): HorseCORSConfig;
   end;
 
-function CORS(): HorseCORS; overload;
+function HorseCORS(): HorseCORSConfig; overload;
 procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc); overload;
 
 implementation
@@ -50,32 +50,32 @@ end;
 
 { HorseCORS }
 
-function HorseCORS.AllowedCredentials(AAllowedCredentials: Boolean): HorseCORS;
+function HorseCORSConfig.AllowedCredentials(AAllowedCredentials: Boolean): HorseCORSConfig;
 begin
   LAllowedCredentials := ifthen(AAllowedCredentials, 'true', 'false');
 end;
 
-function HorseCORS.AllowedHeaders(AAllowedHeaders: string): HorseCORS;
+function HorseCORSConfig.AllowedHeaders(AAllowedHeaders: string): HorseCORSConfig;
 begin
   LAllowedHeaders := AAllowedHeaders;
 end;
 
-function HorseCORS.AllowedMethods(AAllowedMethods: string): HorseCORS;
+function HorseCORSConfig.AllowedMethods(AAllowedMethods: string): HorseCORSConfig;
 begin
   LAllowedMethods := AAllowedMethods;
 end;
 
-function HorseCORS.AllowedOrigin(AAllowedOrigin: string): HorseCORS;
+function HorseCORSConfig.AllowedOrigin(AAllowedOrigin: string): HorseCORSConfig;
 begin
   LAllowedOrigin := AAllowedOrigin;
 end;
 
-function HorseCORS.ExposedHeaders(AExposedHeaders: string): HorseCORS;
+function HorseCORSConfig.ExposedHeaders(AExposedHeaders: string): HorseCORSConfig;
 begin
   LExposedHeaders := AExposedHeaders;
 end;
 
-function CORS(): HorseCORS;
+function HorseCORS(): HorseCORSConfig;
 begin
   //
 end;
