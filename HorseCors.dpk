@@ -31,4 +31,7 @@ package HorseCors;
 requires
   rtl;
 
+contains
+  Horse.CORS in 'src\Horse.CORS.pas';
+
 end.

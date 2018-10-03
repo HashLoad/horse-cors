@@ -13,10 +13,10 @@ type
     function AllowedHeaders(AAllowedHeaders: string): HorseCORS;
     function AllowedMethods(AAllowedMethods: string): HorseCORS;
     function ExposedHeaders(AExposedHeaders: string): HorseCORS;
-    function Build: THorseCallback;
   end;
 
-function HorseCORSBuilder(): HorseCORS;
+function CORS(): HorseCORS; overload;
+procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc); overload;
 
 implementation
 
@@ -34,7 +34,7 @@ procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
   LWebResponse: TWebResponse;
 begin
-  next();
+  Next();
   LWebResponse := THorseHackResponse(Res).GetWebResponse;
   LWebResponse.SetCustomHeader('Access-Control-Allow-Origin', LAllowedOrigin);
   LWebResponse.SetCustomHeader('Access-Control-Allow-Credentials', LAllowedCredentials);
@@ -70,17 +70,12 @@ begin
   LAllowedOrigin := AAllowedOrigin;
 end;
 
-function HorseCORS.Build: THorseCallback;
-begin
-  Result := CORS;
-end;
-
 function HorseCORS.ExposedHeaders(AExposedHeaders: string): HorseCORS;
 begin
   LExposedHeaders := AExposedHeaders;
 end;
 
-function HorseCORSBuilder(): HorseCORS;
+function CORS(): HorseCORS;
 begin
   //
 end;
