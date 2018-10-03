@@ -34,6 +34,7 @@ procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
   LWebResponse: TWebResponse;
 begin
+  next();
   LWebResponse := THorseHackResponse(Res).GetWebResponse;
   LWebResponse.SetCustomHeader('Access-Control-Allow-Origin', LAllowedOrigin);
   LWebResponse.SetCustomHeader('Access-Control-Allow-Credentials', LAllowedCredentials);
