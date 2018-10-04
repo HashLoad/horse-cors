@@ -16,8 +16,8 @@ var
 
 begin
   App := THorse.Create(9000);
-
-  App.Use(HorseCORSBuilder.AllowedOrigin('https://docs.mongodb.com').Build());
+  
+  App.Use(CORS);
   
   App.Post('marco',
     procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
