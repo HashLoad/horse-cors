@@ -15,8 +15,10 @@ type
     function ExposedHeaders(AExposedHeaders: string): HorseCORSConfig;
   end;
 
-function HorseCORS(): HorseCORSConfig; overload;
-procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc); overload;
+procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+
+var
+  HorseCORS: HorseCORSConfig;
 
 implementation
 
@@ -73,11 +75,6 @@ end;
 function HorseCORSConfig.ExposedHeaders(AExposedHeaders: string): HorseCORSConfig;
 begin
   LExposedHeaders := AExposedHeaders;
-end;
-
-function HorseCORS(): HorseCORSConfig;
-begin
-  //
 end;
 
 initialization
