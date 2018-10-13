@@ -15,10 +15,8 @@ type
     function ExposedHeaders(AExposedHeaders: string): HorseCORSConfig;
   end;
 
-procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc);
-
-var
-  HorseCORS: HorseCORSConfig;
+function HorseCORS(): HorseCORSConfig; overload;
+procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc); overload;
 
 implementation
 
@@ -36,17 +34,19 @@ procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
   LWebResponse: TWebResponse;
 begin
-  Next();
   LWebResponse := THorseHackResponse(Res).GetWebResponse;
   LWebResponse.SetCustomHeader('Access-Control-Allow-Origin', LAllowedOrigin);
   LWebResponse.SetCustomHeader('Access-Control-Allow-Credentials', LAllowedCredentials);
   LWebResponse.SetCustomHeader('Access-Control-Allow-Headers', LAllowedHeaders);
   LWebResponse.SetCustomHeader('Access-Control-Allow-Methods', LAllowedMethods);
   LWebResponse.SetCustomHeader('Access-Control-Expose-Headers', LExposedHeaders);
-  if THorseHackRequest(Req).GetWebRequest.MethodType = mtHead then
+  if THorseHackRequest(Req).GetWebRequest.Method = 'OPTIONS' then
   begin
+    Res.Send('').Status(204);
     raise EHorseCallbackInterrupted.Create();
-  end;
+  end
+  else
+    Next();
 
 end;
 
@@ -77,11 +77,16 @@ begin
   LExposedHeaders := AExposedHeaders;
 end;
 
+function HorseCORS(): HorseCORSConfig;
+begin
+  //
+end;
+
 initialization
 
 LAllowedOrigin := '*';
 LAllowedCredentials := 'true';
-LAllowedHeaders := 'Access-Control-Allow-Headers, Content-Type, Accept, authentication';
+LAllowedHeaders := 'Content-Type, Accept, authentication, authorization';
 LAllowedMethods := 'POST, GET, HEAD, PUT, DELETE';
 LExposedHeaders := 'authorization, authentication';
 
