@@ -86,8 +86,8 @@ initialization
 
 LAllowedOrigin := '*';
 LAllowedCredentials := 'true';
-LAllowedHeaders := 'Content-Type, Accept, authentication, authorization';
-LAllowedMethods := 'POST, GET, HEAD, PUT, DELETE';
-LExposedHeaders := 'authorization, authentication';
+LAllowedHeaders := '*';
+LAllowedMethods := '*';
+LExposedHeaders := '*';
 
 end.
