@@ -2,8 +2,7 @@ unit Horse.CORS;
 
 interface
 
-uses
-  System.SysUtils, Horse;
+uses System.SysUtils, Horse;
 
 type
   HorseCORSConfig = record
@@ -20,8 +19,7 @@ procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc); overload;
 
 implementation
 
-uses
-  System.StrUtils, Web.HTTPApp;
+uses System.StrUtils, Web.HTTPApp, Horse.Commons;
 
 var
   LAllowedOrigin: string;
@@ -42,12 +40,11 @@ begin
   LWebResponse.SetCustomHeader('Access-Control-Expose-Headers', LExposedHeaders);
   if THorseHackRequest(Req).GetWebRequest.Method = 'OPTIONS' then
   begin
-    Res.Send('').Status(204);
+    Res.Send('').Status(THTTPStatus.NoContent);
     raise EHorseCallbackInterrupted.Create();
   end
   else
     Next();
-
 end;
 
 { HorseCORS }
@@ -83,11 +80,10 @@ begin
 end;
 
 initialization
-
-LAllowedOrigin := '*';
-LAllowedCredentials := 'true';
-LAllowedHeaders := '*';
-LAllowedMethods := '*';
-LExposedHeaders := '*';
+  LAllowedOrigin := '*';
+  LAllowedCredentials := 'true';
+  LAllowedHeaders := '*';
+  LAllowedMethods := '*';
+  LExposedHeaders := '*';
 
 end.
