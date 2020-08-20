@@ -1,8 +1,16 @@
 unit Horse.CORS;
-
+{$IF DEFINED(FPC)}
+{$MODE DELPHI}{$H+}
+{$ENDIF}
 interface
 
-uses System.SysUtils, Horse;
+uses
+  {$IF DEFINED(FPC)}
+    SysUtils,
+  {$ELSE}
+    System.SysUtils,
+  {$ENDIF}
+  Horse;
 
 type
   HorseCORSConfig = record
@@ -15,11 +23,17 @@ type
   end;
 
 function HorseCORS(): HorseCORSConfig; overload;
-procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc); overload;
+procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: {$IF DEFINED(FPC)}TNextProc{$ELSE}  TProc {$ENDIF}); overload;
 
 implementation
 
-uses System.StrUtils, Web.HTTPApp, Horse.Commons;
+uses
+  {$IF DEFINED(FPC)}
+    httpdefs, StrUtils,
+  {$ELSE}
+    Web.HTTPApp, System.StrUtils,
+  {$ENDIF}
+  Horse.Commons;
 
 var
   LAllowedOrigin: string;
@@ -28,9 +42,9 @@ var
   LAllowedMethods: string;
   LExposedHeaders: string;
 
-procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: TProc);
+procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: {$IF DEFINED(FPC)}TNextProc{$ELSE}  TProc {$ENDIF});
 var
-  LWebResponse: TWebResponse;
+  LWebResponse: {$IF DEFINED(FPC)}TResponse{$ELSE}  TWebResponse {$ENDIF};
 begin
   LWebResponse := THorseHackResponse(Res).GetWebResponse;
   LWebResponse.SetCustomHeader('Access-Control-Allow-Origin', LAllowedOrigin);
