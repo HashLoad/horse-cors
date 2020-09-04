@@ -8,22 +8,17 @@ $ boss install github.com/HashLoad/horse-cors
 
 ### Sample Horse Server with CORS middleware
 ```delphi
-uses
-  Horse, Horse.CORS;
+uses Horse, Horse.CORS;
 
-var
-  App: THorse;
-
-begin
-  App := THorse.Create(9000);
+begin  
+  THorse.Use(CORS);
   
-  App.Use(CORS);
-  
-  App.Post('marco',
+  THorse.Post('/ping',
     procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
     begin
-      Res.Send('polo');
+      Res.Send('pong');
     end);
 
-  App.Start;
+  THorse.Listen(9000);
+end;
 ```
