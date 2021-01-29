@@ -43,16 +43,13 @@ var
   LExposedHeaders: string;
 
 procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: {$IF DEFINED(FPC)}TNextProc{$ELSE}  TProc {$ENDIF});
-var
-  LWebResponse: {$IF DEFINED(FPC)}TResponse{$ELSE}  TWebResponse {$ENDIF};
 begin
-  LWebResponse := THorseHackResponse(Res).GetWebResponse;
-  LWebResponse.SetCustomHeader('Access-Control-Allow-Origin', LAllowedOrigin);
-  LWebResponse.SetCustomHeader('Access-Control-Allow-Credentials', LAllowedCredentials);
-  LWebResponse.SetCustomHeader('Access-Control-Allow-Headers', LAllowedHeaders);
-  LWebResponse.SetCustomHeader('Access-Control-Allow-Methods', LAllowedMethods);
-  LWebResponse.SetCustomHeader('Access-Control-Expose-Headers', LExposedHeaders);
-  if THorseHackRequest(Req).GetWebRequest.Method = 'OPTIONS' then
+  Res.RawWebResponse.SetCustomHeader('Access-Control-Allow-Origin', LAllowedOrigin);
+  Res.RawWebResponse.SetCustomHeader('Access-Control-Allow-Credentials', LAllowedCredentials);
+  Res.RawWebResponse.SetCustomHeader('Access-Control-Allow-Headers', LAllowedHeaders);
+  Res.RawWebResponse.SetCustomHeader('Access-Control-Allow-Methods', LAllowedMethods);
+  Res.RawWebResponse.SetCustomHeader('Access-Control-Expose-Headers', LExposedHeaders);
+  if Req.RawWebRequest.Method = 'OPTIONS' then
   begin
     Res.Send('').Status(THTTPStatus.NoContent);
     raise EHorseCallbackInterrupted.Create();
