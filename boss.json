@@ -1,11 +1,11 @@
 {
 	"name": "horse-cors",
 	"description": "",
-	"version": "1.0.0",
+	"version": "1.0.6",
 	"homepage": "",
 	"mainsrc": "src/",
 	"projects": [],
 	"dependencies": {
-		"github.com/hashload/horse": "^3.0.0"
+		"github.com/hashload/horse": "^3.1.0"
 	}
 }
