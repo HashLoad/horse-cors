@@ -17,7 +17,7 @@ end;
 
 procedure OnListen;
 begin
-  Writeln(Format('Server is runing on %s:%d', [THorse.Host, THorse.Port]));
+  Writeln(Format('Server is running on %s:%d', [THorse.Host, THorse.Port]));
 end;
 
 begin
