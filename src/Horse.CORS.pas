@@ -43,8 +43,22 @@ var
   LExposedHeaders: string;
 
 procedure CORS(Req: THorseRequest; Res: THorseResponse; Next: {$IF DEFINED(FPC)}TNextProc{$ELSE}  TProc {$ENDIF});
+var
+  sl: TArray<String>;
+  Allowed, Origin: String;
 begin
-  Res.RawWebResponse.SetCustomHeader('Access-Control-Allow-Origin', LAllowedOrigin);
+  Allowed := LAllowedOrigin;
+  Origin := Req.Headers['Origin'];
+
+  if Allowed <> '*' then
+  begin
+    sl := Allowed.Split([',', ';', ' '], TStringSplitOptions.ExcludeEmpty);
+
+    if not MatchText(Origin, sl) then
+      Origin := 'null';
+  end;
+
+  Res.RawWebResponse.SetCustomHeader('Access-Control-Allow-Origin', Origin);
   Res.RawWebResponse.SetCustomHeader('Access-Control-Allow-Credentials', LAllowedCredentials);
   Res.RawWebResponse.SetCustomHeader('Access-Control-Allow-Headers', LAllowedHeaders);
   Res.RawWebResponse.SetCustomHeader('Access-Control-Allow-Methods', LAllowedMethods);
