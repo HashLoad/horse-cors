@@ -52,6 +52,9 @@ begin
   LAllowed := LAllowedOrigin;
   LOrigin := Req.Headers['Origin'];
 
+  if Trim(LOrigin) = '' then
+    LOrigin := '*';
+
   if LAllowed <> '*' then
   begin
     LAlloweds := LAllowed.Split([',', ';', ' '], TStringSplitOptions.ExcludeEmpty);
